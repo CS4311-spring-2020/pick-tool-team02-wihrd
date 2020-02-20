@@ -62,7 +62,7 @@ class AssociateVectorScreen(object):
         item.setText(_translate("Dialog", "Vector 4"))
         self.AssociateSearchBar.setText(_translate("Dialog", "Search"))
         self.AssociateSelectVectBtn.setText(_translate("Dialog", "Select Vector"))
-        self.AssociateAddVectBtn.setText(_translate("Dialog", "Add Vector"))
+        self.AssociateAddVectBtn.setText(_translate("Dialog", "Associate to Vector"))
 
 
 if __name__ == "__main__":

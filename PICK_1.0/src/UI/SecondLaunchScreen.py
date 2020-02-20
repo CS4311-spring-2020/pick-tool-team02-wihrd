@@ -8,15 +8,15 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Main_Screen_UI import MainScreen
+from JoinSessionDialog import JoinSessionDialog
 
 
 class SecondLaunchScreen(object):
     def setupUi(self, Dialog):
 
-        def launchMainScreenHelper():
+        def launchJoinSessionHelper():
             Dialog.close()
-            self.launchMainScreen()
+            self.launchJoinSession()
 
         Dialog.setObjectName("Dialog")
         Dialog.resize(400, 300)
@@ -26,11 +26,11 @@ class SecondLaunchScreen(object):
         self.SecondLaunchJoinBtn = QtWidgets.QPushButton(Dialog)
         self.SecondLaunchJoinBtn.setGeometry(QtCore.QRect(130, 120, 113, 32))
         self.SecondLaunchJoinBtn.setObjectName("SecondLaunchJoinBtn")
-        self.SecondLaunchJoinBtn.clicked.connect(launchMainScreenHelper)
+        self.SecondLaunchJoinBtn.clicked.connect(launchJoinSessionHelper)
         self.SecondLaunchStartbtn = QtWidgets.QPushButton(Dialog)
         self.SecondLaunchStartbtn.setGeometry(QtCore.QRect(130, 200, 113, 32))
         self.SecondLaunchStartbtn.setObjectName("SecondLaunchStartbtn")
-        self.SecondLaunchStartbtn.clicked.connect(launchMainScreenHelper)
+        self.SecondLaunchStartbtn.clicked.connect(launchJoinSessionHelper)
         self.SecondLaunchInProgLabel = QtWidgets.QLabel(Dialog)
         self.SecondLaunchInProgLabel.setGeometry(QtCore.QRect(130, 100, 121, 20))
         self.SecondLaunchInProgLabel.setObjectName("SecondLaunchInProgLabel")
@@ -50,9 +50,9 @@ class SecondLaunchScreen(object):
         self.SecondLaunchInProgLabel.setText(_translate("Dialog", "Session in Progress"))
         self.SecondLaunchNoSessionLabel.setText(_translate("Dialog", "No Session in Progress"))
 
-    def launchMainScreen(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = MainScreen()
+    def launchJoinSession(self):
+        self.window = QtWidgets.QDialog()
+        self.ui = JoinSessionDialog()
         self.ui.setupUi(self.window)
         self.window.show()
 
