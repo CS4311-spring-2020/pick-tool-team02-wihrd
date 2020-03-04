@@ -8,7 +8,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QApplication, QWidget, QPushButton
+from PyQt5.QtCore import pyqtSlot
 from AddVectorDialog import addVectorDialog
 from Deny_Popup import DenyDialog
 from Filter import FilterScreen
@@ -133,6 +134,11 @@ class MainScreen(object):
         self.LogIngestionImportLogBtn = QtWidgets.QPushButton(self.LogIngest)
         self.LogIngestionImportLogBtn.setGeometry(QtCore.QRect(154, 232, 91, 31))
         self.LogIngestionImportLogBtn.setObjectName("LogIngestionImportLogBtn")
+
+        #New code
+        #        self.LogEntriesFilterBtn.clicked.connect(self.showFilterScreen)
+
+        self.LogIngestionImportLogBtn.clicked.connect(self.on_click)
         self.LogIngestionIgnoreBtn = QtWidgets.QPushButton(self.LogIngest)
         self.LogIngestionIgnoreBtn.setGeometry(QtCore.QRect(30, 472, 75, 31))
         self.LogIngestionIgnoreBtn.setObjectName("LogIngestionIgnoreBtn")
@@ -1036,6 +1042,12 @@ class MainScreen(object):
         self.HistoryNotificationsLabel.setText(_translate("MainWindow", "Notifications"))
         self.MainPageTabWidget.setTabText(self.MainPageTabWidget.indexOf(self.Lead), _translate("MainWindow", "Lead"))
 
+        # button = QPushButton('Import Log Test', self)
+        # button.setToolTip('test for splunk')
+        # button.move(100, 70)
+        # button.clicked.connect(self.on_click)
+        #
+
     def dissconnectedPopup(self):
         msg = QMessageBox()
         msg.setWindowTitle("Disconnected")
@@ -1044,6 +1056,8 @@ class MainScreen(object):
         msg.setStandardButtons(QMessageBox.Ok)
         x = msg.exec_()
 
+    def on_click(self):
+        print('Clicked test')
 
     def showAddVectorDialog(self):
         self.window = QtWidgets.QDialog()
@@ -1086,6 +1100,9 @@ class MainScreen(object):
         self.ui = ExportGraphScreen()
         self.ui.setupUi(self.window)
         self.window.show()
+
+    def splunkIntegration(self):
+        self.window = QtWidgets.QDialog()
 
 
 
