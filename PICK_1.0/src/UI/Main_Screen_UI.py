@@ -18,6 +18,7 @@ from AssociatePopUp import AssociateVectorScreen
 from Detecting_Changes import DetectingChangesScreen
 from ExportGraph import ExportGraphScreen
 
+from UI import splunkAuth
 
 
 class MainScreen(object):
@@ -1058,6 +1059,7 @@ class MainScreen(object):
 
     def on_click(self):
         print('Clicked test')
+        splunkAuth.splunk_upload()
 
     def showAddVectorDialog(self):
         self.window = QtWidgets.QDialog()
