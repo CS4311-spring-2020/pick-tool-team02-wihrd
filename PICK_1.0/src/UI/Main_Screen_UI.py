@@ -18,7 +18,7 @@ from AssociatePopUp import AssociateVectorScreen
 from Detecting_Changes import DetectingChangesScreen
 from ExportGraph import ExportGraphScreen
 
-from UI import splunkAuth
+#from splunkAuth import splunkAuth
 
 
 class MainScreen(object):
