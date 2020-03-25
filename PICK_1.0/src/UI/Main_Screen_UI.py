@@ -19,6 +19,7 @@ from Detecting_Changes import DetectingChangesScreen
 from ExportGraph import ExportGraphScreen
 
 #from splunkAuth import splunkAuth
+from UI import splunkAuth
 
 
 class MainScreen(object):
@@ -1060,6 +1061,8 @@ class MainScreen(object):
     def on_click(self):
         print('Clicked test')
         splunkAuth.splunk_upload()
+        splunkAuth.splunkExport()
+        
 
     def showAddVectorDialog(self):
         self.window = QtWidgets.QDialog()
