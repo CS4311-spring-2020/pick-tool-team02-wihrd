@@ -1,6 +1,7 @@
 import splunklib.client as client
 import sys
 from os import path
+import re
 import os
 import splunklib.results as results
 
@@ -43,16 +44,24 @@ def splunk_upload():
 def splunkExport():
     service = client.connect(host=HOST, port=PORT, username=USERNAME, password=PASSWORD)
     rr = results.ResultsReader(service.jobs.export("search index=test_index"))
+    substringSource = "source"
+    substringDescription = "_raw"
+    substringHost = "host"
+    logEntryList = []
 
     for result in rr:
         if isinstance(result, results.Message):
-            # Diagnostic messages might be returned in the results
-            print('%s: %s' % (result.type, result.message))
+            print("")
+            # print('%s: %s' % (result.type, result.message))
+
         elif isinstance(result, dict):
             # Normal events are returned as dicts
-            print(result)
+            res = dict((k, result[k]) for k in [substringSource, substringHost, substringDescription] if k in result)
+            logEntryList.append(res)
+
     assert rr.is_preview == False
 
+    return logEntryList
 
 if __name__ == '__main__':
     splunk_upload()

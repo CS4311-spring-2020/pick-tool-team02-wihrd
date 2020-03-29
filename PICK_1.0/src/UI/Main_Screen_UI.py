@@ -1062,7 +1062,6 @@ class MainScreen(object):
         print('Clicked test')
         splunkAuth.splunk_upload()
         splunkAuth.splunkExport()
-        
 
     def showAddVectorDialog(self):
         self.window = QtWidgets.QDialog()
