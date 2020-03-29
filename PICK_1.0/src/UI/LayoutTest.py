@@ -30,6 +30,7 @@ class Example(QWidget):
         self.setGeometry(300, 300, 300, 150)
         self.setWindowTitle('Buttons')    
         self.show()
+
         
         
 if __name__ == '__main__':
