@@ -4,7 +4,7 @@ from os import path
 import re
 import os
 import splunklib.results as results
-
+from LogValidation import validate_log
 
 HOST = 'localhost'
 PORT = '8089'
@@ -29,13 +29,21 @@ def splunk_upload():
 
         directory = os.fsencode(path)
 
+        #dates
+        s = "02/26/2020"
+        e = "03/26/2021"
+
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             concatString = path + filename
-            print(concatString)
-            myindex.upload(concatString)
-            del concatString
-            continue
+           #print(concatString)
+            val = validate_log(concatString, s, e)
+            if(val == 1):
+                myindex.upload(concatString)
+                del concatString
+                continue
+            else:
+                continue
 
     except Exception as e:
         print('error:')
