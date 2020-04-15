@@ -1,8 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget, QAction, QTabWidget,QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget, QAction, QTabWidget,QVBoxLayout, qApp, QAction, QToolBar
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 from LogIngestionScreen import LogIngestionScreen
+from EventConfigDialog import EventConfigDialog
 
 class App(QMainWindow):
     
@@ -15,11 +16,39 @@ class App(QMainWindow):
         self.height = 700
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
-        
+
+        exitAct = QAction(QIcon('exit.png'), '&Exit', self)        
+        exitAct.setShortcut('Ctrl+Q')
+        exitAct.setStatusTip('Exit application')
+        exitAct.triggered.connect(qApp.quit)
+
+        self.statusBar()
+
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(exitAct)
+
+        toolbar = QToolBar("My main toolbar")
+        self.addToolBar(toolbar)
+
+        button_action = QAction("Event Configuration", self)
+        button_action.setStatusTip("This is your button")
+        button_action.triggered.connect(self.showEventConfigScreen)
+        toolbar.addAction(button_action)
+
         self.home_page = HomePage(self)
         self.setCentralWidget(self.home_page)
         
         self.show()
+
+    def onMyToolBarButtonClick(self, s):
+        print("click", s)
+
+    def showEventConfigScreen(self):
+        self.popup = QWidget()
+        self.ecDialog = EventConfigDialog()
+        self.ecDialog.setUpDialogUI(self.popup)
+        self.popup.show()
 
 
 class HomePage(QWidget):
@@ -37,18 +66,14 @@ class HomePage(QWidget):
         self.tab3 = QWidget()
         self.tab4 = QWidget()
         self.tab5 = QWidget()
-        self.tab6 = QWidget()
-        self.tab7 = QWidget()
 
         self.tabs.resize(300,200)
 
         self.tabs.addTab(self.tab1, "Log Ingestion")
-        self.tabs.addTab(self.tab2, "Tab 2")
-        self.tabs.addTab(self.tab3, "Tab 3")
-        self.tabs.addTab(self.tab4, "Tab 4")
-        self.tabs.addTab(self.tab5, "Tab 5")
-        self.tabs.addTab(self.tab6, "Tab 6")
-        self.tabs.addTab(self.tab7, "Tab 7")
+        self.tabs.addTab(self.tab2, "Log Entries")
+        self.tabs.addTab(self.tab3, "Vector View")
+        self.tabs.addTab(self.tab4, "History")
+        self.tabs.addTab(self.tab5, "Lead")
 
         self.layout.addWidget(self.tabs)
 
