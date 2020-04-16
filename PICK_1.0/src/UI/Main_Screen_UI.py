@@ -20,6 +20,7 @@ from ExportGraph import ExportGraphScreen
 
 #from splunkAuth import splunkAuth
 #from UI import splunkAuth
+from UI import splunkAuth
 
 
 class MainScreen(object):
