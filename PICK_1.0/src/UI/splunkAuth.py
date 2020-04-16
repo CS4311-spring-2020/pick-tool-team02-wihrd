@@ -72,9 +72,9 @@ def splunkExport():
             name = ""
 
             obj = logEntry(desc.values(), timestamp, name, source.values())
-            #print(res)
-            print(desc.values())
-            print(source.values())
+            # print(res)
+            # print(desc.values())
+            # print(source.values())
             logEntryList.append(obj)
 
     assert rr.is_preview == False
