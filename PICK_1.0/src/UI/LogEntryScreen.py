@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QRect
 from Models.LogEntry import logEntry
+from UI import splunkAuth
 
 class LogEntryScreen(QWidget):
 
@@ -43,7 +44,7 @@ class LogEntryScreen(QWidget):
         primaryLayout.addWidget(logEntryTableLable)
         primaryLayout.addWidget(logEntryTable)
 
-        self.refreshTable(logEntryTable, list)
+        self.refreshTable(logEntryTable, splunkAuth.splunkExport())
 
 
         filterbtn = QPushButton("Filter")
