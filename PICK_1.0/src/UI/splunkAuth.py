@@ -3,11 +3,15 @@ import sys
 from os import path
 import re
 import os
-import splunklib.results as results
-from UI.LogValidation import validate_log
-from UI.Models.LogEntry import logEntry
-import numpy as np
 import json
+import splunklib.results as results
+from LogValidation import validate_log
+from Models import LogEntry
+from Models.LogEntry import logEntry
+from Models.LogFile import LogFile
+from Models.EventConfiguration import EventConfiguration
+import numpy as np
+import time
 
 HOST = 'localhost'
 PORT = '8089'
@@ -87,6 +91,21 @@ def splunkExport():
 
     return logEntryList
 
+
+def importLogs():
+     logList = list()
+     root = EventConfiguration.getRootDirectory()
+     #root = "C:\\Users\\Dgarc\\Desktop\\test_dir"
+     folders = ["Red", "Blue", "White"]
+     for f in folders:
+        dir = root + "\\" + f
+        files = os.listdir(dir)
+        for x in files:
+            path = dir + "\\" + x
+            timeStamp = time.ctime(os.path.getctime(path))
+            log = LogFile(x, timeStamp, path, f)
+            logList.append(log)
+     return logList
 
 if __name__ == '__main__':
     splunk_upload()
