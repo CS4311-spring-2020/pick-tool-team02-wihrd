@@ -1,0 +1,5 @@
+PICK_1.0/src/.vscode/settings.json
+PICK_1.0/src/UI/Models/__pycache__/EventConfiguration.cpython-36.pyc
+PICK_1.0/src/UI/__pycache__/EventConfigDialog.cpython-36.pyc
+PICK_1.0/src/UI/__pycache__/Main_Screen_UI.cpython-36.pyc
+*.pyc
