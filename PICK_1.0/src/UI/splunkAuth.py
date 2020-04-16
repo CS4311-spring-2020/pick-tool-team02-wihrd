@@ -4,9 +4,10 @@ from os import path
 import re
 import os
 import splunklib.results as results
-from LogValidation import validate_log
-from Models import LogEntry
-from Models.LogEntry import logEntry
+from UI.LogValidation import validate_log
+from UI.Models.LogEntry import logEntry
+import numpy as np
+import json
 
 HOST = 'localhost'
 PORT = '8089'
@@ -17,13 +18,13 @@ def splunk_upload():
     service = client.connect(host=HOST, port=PORT, username=USERNAME, password=PASSWORD)
     print(service)
     try:
-        service.indexes.create("test_index5")
+        service.indexes.create("test_index8")
     except:
         print("Index exits already")
     try:
         print("Uploading file")
         # Retrieve the index for the data
-        myindex = service.indexes["test_index5"]
+        myindex = service.indexes["test_index8"]
         # Create a variable with the path and filename
         path = "C:\\Users\\wkoo0\\Videos\\test\\"
         # Upload and index the file
@@ -52,7 +53,7 @@ def splunk_upload():
 
 def splunkExport():
     service = client.connect(host=HOST, port=PORT, username=USERNAME, password=PASSWORD)
-    rr = results.ResultsReader(service.jobs.export("search index=test_index5"))
+    rr = results.ResultsReader(service.jobs.export("search index=test_index8"))
     substringSource = "source"
     substringDescription = "_raw"
     substringHost = "host"
@@ -71,10 +72,15 @@ def splunkExport():
             timestamp = ""
             name = ""
 
-            obj = logEntry(desc.values(), timestamp, name, source.values())
+            descResult = str(desc.values())
+            #descResult.join(desc.values())
+            sourceResult = str(source.values())
+            # sourceResult.join(source.values())
+            obj = logEntry(descResult, timestamp, name, sourceResult)
+
             # print(res)
-            # print(desc.values())
-            # print(source.values())
+            print(descResult)
+            print(sourceResult)
             logEntryList.append(obj)
 
     assert rr.is_preview == False
