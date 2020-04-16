@@ -88,8 +88,8 @@ def splunkExport():
 
 def importLogs():
      logList = list()
-     #root = EventConfiguration.getRootDirectory()
-     root = "C:\\Users\\Dgarc\\Desktop\\test_dir"
+     root = EventConfiguration.getRootDirectory()
+     #root = "C:\\Users\\Dgarc\\Desktop\\test_dir"
      folders = ["Red", "Blue", "White"]
      for f in folders:
         dir = root + "\\" + f
