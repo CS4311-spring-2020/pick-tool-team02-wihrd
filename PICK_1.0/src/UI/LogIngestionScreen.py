@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplication, QWidget, QTableWidget, QListWidget, QListWidgetItem, QPushButton
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QRect
+from UI import splunkAuth
 
 class LogIngestionScreen(QWidget):
     def __init__(self, parent):
@@ -40,6 +41,7 @@ class LogIngestionScreen(QWidget):
         validationTableGroupBox.setLayout(validationTableLayout)
         importLogsBtn = QPushButton("Import Logs")
         ingestLogsBtn = QPushButton("Ingest Logs")
+        ingestLogsBtn.clicked.connect(self.onClickLogIngestBtn)
         spacerlabel = QLabel()
         spacerlabel3 = QLabel()
         spacerlabel4 = QLabel()
@@ -106,6 +108,10 @@ class LogIngestionScreen(QWidget):
 
         self.show()
 
+    def onClickLogIngestBtn(self):
+        splunkAuth.splunk_upload()
+        splunkAuth.splunkExport()
+        print("test successful")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
