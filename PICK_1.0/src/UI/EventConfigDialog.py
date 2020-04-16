@@ -81,13 +81,9 @@ class EventConfigDialog(object):
         rootDirectoryLayout.addWidget(endTimeLable)
         rootDirectoryLayout.addWidget(endTimeEdit)
 
-
-
         rootDirectoryGroupBox = QGroupBox()
         rootDirectoryGroupBox.setLayout(rootDirectoryLayout)
 
-
-        
         primaryLayout.addWidget(eventDescriptionGroup)
         primaryLayout.addWidget(rootDirectoryGroupBox)
         primaryGroupbox.setLayout(primaryLayout)
@@ -99,21 +95,10 @@ class EventConfigDialog(object):
 
         QWidget.setLayout(wrapperLayout)
         
-
-
-
         QWidget.show()
 
 
         
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

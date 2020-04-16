@@ -32,7 +32,7 @@ class App(QMainWindow):
         self.addToolBar(toolbar)
 
         button_action = QAction("Event Configuration", self)
-        button_action.setStatusTip("This is your button")
+        button_action.setStatusTip("Click this button to edit the details and key information about the current Event!")
         button_action.triggered.connect(self.showEventConfigScreen)
         toolbar.addAction(button_action)
 
