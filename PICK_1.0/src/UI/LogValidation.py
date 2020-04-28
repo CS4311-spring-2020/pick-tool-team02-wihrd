@@ -2,6 +2,7 @@ import os
 import time
 import datetime
 import calendar
+from Models.EAR import EAR
 
 
 def check_time(Logdate, start, end):
@@ -22,6 +23,7 @@ def check_time(Logdate, start, end):
         return 1
 
 def validate_log(file, startDate , endDate):
+    earList = []
     logPath = os.path.abspath(str(file))
     print("Log: %s" % logPath)
     dir = os.path.dirname(logPath)
@@ -46,6 +48,8 @@ def validate_log(file, startDate , endDate):
         return 1
     else:
         #enforcment action
+        obj = EAR(logPath, log_date, "", "", "Timestamp out of bounds")
+        earList.append(obj)
         print("Timestamp out of bounds")
         return -1
 
