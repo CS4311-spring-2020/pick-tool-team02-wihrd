@@ -87,7 +87,7 @@ def splunkExport():
             print(sourceResult)
             logEntryList.append(obj)
 
-    assert rr.is_preview == False
+    #assert rr.is_preview == False
 
     return logEntryList
 
