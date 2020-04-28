@@ -25,6 +25,26 @@ class LogIngestionScreen(QWidget):
         enforcementTableLayout = QVBoxLayout()
         validationTableButtonsLayout = QHBoxLayout()
 
+        # #Enforcement Action Table Layout
+        enfrocementTableHeaders = ["Log File", "Time", "Description", "Team", "Error"]
+        enforcementTable = QTableWidget(4, 5)
+        enforcementTable.setHorizontalHeaderLabels(enfrocementTableHeaders)
+        enforcementTableGroupBox = QGroupBox("Enforcement Action Reports")
+        enforcementTableLayout.addWidget(enforcementTable)
+        enforcementTableGroupBox.setLayout(enforcementTableLayout)
+        ignoreEARbtn = QPushButton("Ignore")
+        confirmEARbtn = QPushButton("Confirm")
+        spacerlabel7 = QLabel()
+        spacerlabel8 = QLabel()
+        enforcementbtnGroupBox = QGroupBox()
+        enforcementbtnLayout = QHBoxLayout()
+        enforcementbtnLayout.addWidget(spacerlabel7)
+        enforcementbtnLayout.addWidget(spacerlabel8)
+        enforcementbtnLayout.addWidget(ignoreEARbtn)
+        enforcementbtnLayout.addWidget(confirmEARbtn)
+        enforcementbtnGroupBox.setLayout(enforcementbtnLayout)
+        enforcementTableLayout.addWidget(enforcementbtnGroupBox)
+
         #ValidationTableLayout Content Definitions
         validationTableLabels = ["Log File", "Time", "Description", "Team", "Progress", "Status"]
         validationTable = QTableWidget(3, 6)
@@ -41,7 +61,7 @@ class LogIngestionScreen(QWidget):
         validationTableGroupBox.setLayout(validationTableLayout)
         importLogsBtn = QPushButton("Import Logs")
         ingestLogsBtn = QPushButton("Ingest Logs")
-        ingestLogsBtn.clicked.connect(self.onClickLogIngestBtn)
+        ingestLogsBtn.clicked.connect(lambda: self.onClickLogIngestBtn(enforcementTable))
         spacerlabel = QLabel()
         spacerlabel3 = QLabel()
         spacerlabel4 = QLabel()
@@ -63,26 +83,6 @@ class LogIngestionScreen(QWidget):
         validationGroupBox.setLayout(validationLayout)
 
 
-
-        #Enforcement Action Table Layout
-        enfrocementTableHeaders = ["Log File", "Time", "Description", "Team", "Error"]
-        enforcementTable = QTableWidget(4, 5)
-        enforcementTable.setHorizontalHeaderLabels(enfrocementTableHeaders)
-        enforcementTableGroupBox = QGroupBox("Enforcement Action Reports")
-        enforcementTableLayout.addWidget(enforcementTable)
-        enforcementTableGroupBox.setLayout(enforcementTableLayout)
-        ignoreEARbtn = QPushButton("Ignore")
-        confirmEARbtn = QPushButton("Confirm")
-        spacerlabel7 = QLabel()
-        spacerlabel8 = QLabel()
-        enforcementbtnGroupBox = QGroupBox()
-        enforcementbtnLayout = QHBoxLayout()
-        enforcementbtnLayout.addWidget(spacerlabel7)
-        enforcementbtnLayout.addWidget(spacerlabel8)
-        enforcementbtnLayout.addWidget(ignoreEARbtn)
-        enforcementbtnLayout.addWidget(confirmEARbtn)
-        enforcementbtnGroupBox.setLayout(enforcementbtnLayout)
-        enforcementTableLayout.addWidget(enforcementbtnGroupBox)
 
         #cleansing layout content definitions
         cleansingList = QListWidget()
@@ -108,10 +108,57 @@ class LogIngestionScreen(QWidget):
 
         self.show()
 
-    def onClickLogIngestBtn(self):
-        splunkAuth.splunk_upload()
+    def refreshEARTable(self, tableWidget, earList):
+        print("Here2")
+        if(earList and tableWidget):
+            print("2 loop")
+            rowcount = tableWidget.rowCount()
+            for ear in earList:
+                print("3 loop")
+                tableWidget.insertRow(rowcount)
+                tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
+                tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(ear.getName()))
+                tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(ear.getTime()))
+                tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(ear.getDesc()))
+                tableWidget.setItem(rowcount, 4, QtWidgets.QTableWidgetItem(ear.getTeam()))
+                tableWidget.setItem(rowcount, 5, QtWidgets.QTableWidgetItem(ear.getError()))
+                rowcount = rowcount+1
+
+
+    def onClickLogIngestBtn(self, earTable):
+        earList = splunkAuth.splunk_upload()
+        print("HERE")
+        self.refreshEARTable(earTable, earList)
         splunkAuth.splunkExport()
         print("test successful")
+
+    # def earTable(self):
+    #     bottomLayout = QHBoxLayout()
+    #     enforcementTableLayout = QVBoxLayout()
+    #     #Enforcement Action Table Layout
+    #     enfrocementTableHeaders = ["Log File", "Time", "Description", "Team", "Error"]
+    #     enforcementTable = QTableWidget(4, 5)
+    #     enforcementTable.setHorizontalHeaderLabels(enfrocementTableHeaders)
+    #     enforcementTableGroupBox = QGroupBox("Enforcement Action Reports")
+    #     enforcementTableLayout.addWidget(enforcementTable)
+    #     enforcementTableGroupBox.setLayout(enforcementTableLayout)
+    #     ignoreEARbtn = QPushButton("Ignore")
+    #     confirmEARbtn = QPushButton("Confirm")
+    #     spacerlabel7 = QLabel()
+    #     spacerlabel8 = QLabel()
+    #     enforcementbtnGroupBox = QGroupBox()
+    #     enforcementbtnLayout = QHBoxLayout()
+    #     enforcementbtnLayout.addWidget(spacerlabel7)
+    #     enforcementbtnLayout.addWidget(spacerlabel8)
+    #     enforcementbtnLayout.addWidget(ignoreEARbtn)
+    #     enforcementbtnLayout.addWidget(confirmEARbtn)
+    #     enforcementbtnGroupBox.setLayout(enforcementbtnLayout)
+    #     enforcementTableLayout.addWidget(enforcementbtnGroupBox)
+    #     bottomLayout.addWidget(enforcementTableGroupBox)
+    #
+    #     self.show()
+    #
+    #     return enforcementTable
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

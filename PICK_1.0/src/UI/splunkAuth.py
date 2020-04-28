@@ -10,6 +10,7 @@ from Models import LogEntry
 from Models.LogEntry import logEntry
 from Models.LogFile import LogFile
 from Models.EventConfiguration import EventConfiguration
+from Models.EAR import EAR
 import numpy as np
 import time
 
@@ -39,21 +40,31 @@ def splunk_upload():
         #dates
         s = "03/20/2020"
         e = "04/26/2020"
+        earList = []
 
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             concatString = path + filename
-           #print(concatString)
+            log_date = time.ctime(os.path.getctime(concatString))
+            print(concatString)
             val = validate_log(concatString, s, e)
             if(val == 1):
                 #print("Log ingested to splunk")
                 myindex.upload(concatString)
                 del concatString
+            else:
+                print("Here")
+                obj = EAR(concatString, log_date, "", "", "Timestamp Out of Bounds")
+                earList.append(obj)
             continue
+
 
     except Exception as e:
         print('error:')
         print(str(e))
+
+    return earList
+
 
 def splunkExport():
     service = client.connect(host=HOST, port=PORT, username=USERNAME, password=PASSWORD)
