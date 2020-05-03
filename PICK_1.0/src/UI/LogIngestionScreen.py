@@ -61,7 +61,7 @@ class LogIngestionScreen(QWidget):
         validationTableGroupBox.setLayout(validationTableLayout)
         importLogsBtn = QPushButton("Import Logs")
         ingestLogsBtn = QPushButton("Ingest Logs")
-        ingestLogsBtn.clicked.connect(lambda: self.onClickLogIngestBtn(enforcementTable))
+        ingestLogsBtn.clicked.connect(lambda: self.onClickLogIngestBtn(enforcementTable, validationTable))
         spacerlabel = QLabel()
         spacerlabel3 = QLabel()
         spacerlabel4 = QLabel()
@@ -81,8 +81,6 @@ class LogIngestionScreen(QWidget):
         #Validation Settings
         validationGroupBox = QGroupBox()
         validationGroupBox.setLayout(validationLayout)
-
-
 
         #cleansing layout content definitions
         cleansingList = QListWidget()
@@ -124,10 +122,29 @@ class LogIngestionScreen(QWidget):
                 tableWidget.setItem(rowcount, 5, QtWidgets.QTableWidgetItem(ear.getError()))
                 rowcount = rowcount+1
 
+    def refreshValidationTable(self, tableWidget, valList):
+        print("Here4")
+        if(valList and tableWidget):
+            print("3 loop")
+            rowcount = tableWidget.rowCount()
+            for val in valList:
+                print("4 loop")
+                tableWidget.insertRow(rowcount)
+                tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
+                tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(val.get_name()))
+                tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(val.get_timestamp()))
+                tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(val.get_description()))
+                tableWidget.setItem(rowcount, 4, QtWidgets.QTableWidgetItem(val.get_path()))
+                tableWidget.setItem(rowcount, 5, QtWidgets.QTableWidgetItem(val.get_path()))
+                tableWidget.setItem(rowcount, 6, QtWidgets.QTableWidgetItem(val.get_path()))
+                rowcount = rowcount+1
 
-    def onClickLogIngestBtn(self, earTable):
+
+    def onClickLogIngestBtn(self, earTable, valTable):
         earList = splunkAuth.splunk_upload()
+        valList = splunkAuth.valTable()
         print("HERE")
+        self.refreshValidationTable(valTable, valList)
         self.refreshEARTable(earTable, earList)
         splunkAuth.splunkExport()
         print("test successful")

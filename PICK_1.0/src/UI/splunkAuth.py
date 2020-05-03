@@ -19,6 +19,34 @@ PORT = '8089'
 USERNAME = 'wkoo05'
 PASSWORD = 'splunkpw1'
 
+def valTable():
+    path = "C:\\Users\\wkoo0\\Videos\\test\\"
+    directory = os.fsencode(path)
+    validationList = []
+    s = "03/20/2020"
+    e = "04/26/2020"
+
+    try:
+        for file in os.listdir(directory):
+            filename = os.fsdecode(file)
+            concatString = path + filename
+            log_date = time.ctime(os.path.getctime(concatString))
+            print(concatString)
+            val = validate_log(concatString, s, e)
+            if(val == 1):
+                obj = logEntry(" ", log_date, filename, concatString)
+                print("Log ingested to splunk")
+                validationList.append(obj)
+                del concatString
+            else:
+                continue
+
+    except Exception as e:
+        print('error:')
+        print(str(e))
+
+    return validationList
+
 def splunk_upload():
     service = client.connect(host=HOST, port=PORT, username=USERNAME, password=PASSWORD)
     print(service)
@@ -41,6 +69,7 @@ def splunk_upload():
         s = "03/20/2020"
         e = "04/26/2020"
         earList = []
+        validationList = []
 
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
@@ -51,11 +80,14 @@ def splunk_upload():
             if(val == 1):
                 #print("Log ingested to splunk")
                 myindex.upload(concatString)
+                obj = LogEntry(" ", log_date, filename, concatString)
+                validationList.append(obj)
                 del concatString
             else:
                 print("Here")
                 obj = EAR(concatString, log_date, "", "", "Timestamp Out of Bounds")
                 earList.append(obj)
+                del concatString
             continue
 
 
