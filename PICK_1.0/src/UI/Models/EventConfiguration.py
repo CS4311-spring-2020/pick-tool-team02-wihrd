@@ -1,4 +1,5 @@
 import sys
+#from Models.Vector import vector
 
 class EventConfiguration:
                 
@@ -8,6 +9,7 @@ class EventConfiguration:
     __rootDirectory = ""
     __eventName = ""
     __eventDescription = ""
+    __vectorList = []
 
     def __init__(self):
         if(EventConfiguration.instance == None):
@@ -28,6 +30,7 @@ class EventConfiguration:
         EventConfiguration.instance.__rootDirecotry = rootDirectory
         EventConfiguration.instance.__eventName = eventName
         EventConfiguration.instance.__eventDescription = eventDescription
+        EventConfiguration.instance.__vectorList = []
         return EventConfiguration.instance
 
     def getName(self):
@@ -59,6 +62,12 @@ class EventConfiguration:
 
     def setRootDirectory(self, rootDirectory):
         EventConfiguration.instance.__rootDirecotry = rootDirectory
+
+    def addVector(self, vector):
+        EventConfiguration.instance.__vectorList.append(vector)
+
+    def getVectorList(self):
+        return EventConfiguration.instance.__vectorList
 
     
     

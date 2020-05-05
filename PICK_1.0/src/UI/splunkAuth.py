@@ -11,13 +11,13 @@ from Models.LogEntry import logEntry
 from Models.LogFile import LogFile
 from Models.EventConfiguration import EventConfiguration
 from Models.EAR import EAR
-import numpy as np
+#import numpy as np
 import time
 
 HOST = 'localhost'
 PORT = '8089'
-USERNAME = 'wkoo05'
-PASSWORD = 'splunkpw1'
+USERNAME = 'imhudson'
+PASSWORD = 'Test1234'
 
 def valTable():
     path = "C:\\Users\\wkoo0\\Videos\\test\\"
@@ -137,7 +137,8 @@ def splunkExport():
 
 def importLogs():
      logList = list()
-     root = EventConfiguration.getRootDirectory()
+     eventconfig = EventConfiguration.getInstance()
+     root = eventconfig.getRootDirectory()
      #root = "C:\\Users\\Dgarc\\Desktop\\test_dir"
      folders = ["Red", "Blue", "White"]
      for f in folders:

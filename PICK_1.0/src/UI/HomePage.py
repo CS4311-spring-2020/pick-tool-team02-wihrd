@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSlot
 from LogIngestionScreen import LogIngestionScreen
 from EventConfigDialog import EventConfigDialog
 from LogEntryScreen import LogEntryScreen
+from VectorViewScreen import VectorScreen
 
 class App(QMainWindow):
     
@@ -64,7 +65,7 @@ class HomePage(QWidget):
         self.tabs = QTabWidget()
         self.tab1 = LogIngestionScreen(self)
         self.tab2 = LogEntryScreen(self)
-        self.tab3 = QWidget()
+        self.tab3 = VectorScreen(self)
         self.tab4 = QWidget()
         self.tab5 = QWidget()
 
