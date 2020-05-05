@@ -66,8 +66,8 @@ def splunk_upload():
         directory = os.fsencode(path)
 
         #dates
-        s = "03/20/2020"
-        e = "04/26/2020"
+        s = str("03/20/2020")
+        e = str("04/26/2020")
         earList = []
         validationList = []
 
@@ -105,6 +105,7 @@ def splunkExport():
     substringDescription = "_raw"
     substringHost = "host"
     logEntryList = []
+    i = 0
 
     for result in rr:
         if isinstance(result, results.Message):
@@ -116,12 +117,14 @@ def splunkExport():
             source = dict((k, result[k]) for k in [substringSource] if k in result)
             host = dict((k, result[k]) for k in [substringHost] if k in result)
             desc = dict((k, result[k]) for k in [substringDescription] if k in result)
-            timestamp = ""
-            name = ""
+            name = "Log " + str(i)
 
-            descResult = str(desc.values())
+            i+=1
+            descResult = str(desc.values()).split("dict_values(['",1)[1]
+            timestamp = descResult[:24]
+            descResult = descResult[24:]
             #descResult.join(desc.values())
-            sourceResult = str(source.values())
+            sourceResult = str(source.values()).split("dict_values(['",1)[1]
             # sourceResult.join(source.values())
             obj = logEntry(descResult, timestamp, name, sourceResult)
 

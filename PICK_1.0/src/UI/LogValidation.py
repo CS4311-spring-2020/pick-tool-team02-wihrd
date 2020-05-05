@@ -26,11 +26,13 @@ def check_time(Logdate, start, end):
 
 
 def validate_log(file, startDate, endDate):
+    print("Start here")
     logPath = os.path.abspath(str(file))
     print("Log: %s" % logPath)
     dir = os.path.dirname(logPath)
     sd = startDate.split("/")
     ed = endDate.split("/")
+    print("Another")
 
     dir = dir.lower().endswith(('test_dir'))
     txt_Type = logPath.endswith('.txt')
@@ -65,20 +67,25 @@ def validate_log(file, startDate, endDate):
 
 
 def txt_logs(file, startDate, endDate):
+    v = 0
     f = open(file, "r")
     content = f.read()
     pattern = "\d{2}[:]\d{2}\s\d{2}[/]\d{2}[/]\d{2}\s\w\w"
     dates = re.findall(pattern, content)
-    sd = startDate.split("/")
-    ed = endDate.split("/")
+    #sd = startDate.split("/")
+    #ed = endDate.split("/")
+    print(startDate)
+    print(endDate)
+    print("Another2")
 
     for x in dates:
         p = x.split(" ")
         d = p[1].split("/")
         logDate = d[0] + " " + d[1] + " " + d[2]
         print("Timestamp: " + x)
-        v = check_time(logDate, sd, ed)
-    return v
+        v = check_time(logDate, startDate, endDate)
+        print(v)
+        return v
 
 
 def excel_logs(file, startDate, endDate):
