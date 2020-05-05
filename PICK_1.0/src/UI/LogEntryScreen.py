@@ -111,24 +111,28 @@ class LogEntryScreen(QWidget):
 
 
 
-
     def refreshTable(self, tableWidget, logEntryList):
-        print("firstloop")
-        if(logEntryList and tableWidget):
-            print("secondloop")
-            rowcount = tableWidget.rowCount()
-            for logEntry in logEntryList:
-                print("thirdloop")
-                tableWidget.insertRow(rowcount)
-                tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
-                tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(logEntry.get_name()))
-                tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(logEntry.get_timestamp()))
-                tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(logEntry.get_description()))
-                tableWidget.setItem(rowcount, 4, QtWidgets.QTableWidgetItem(""))
-                tableWidget.setItem(rowcount, 5, QtWidgets.QTableWidgetItem(logEntry.get_path()))
-                tableWidget.setItem(rowcount, 6, QtWidgets.QTableWidgetItem(""))
-                rowcount = rowcount+1
-            #tableWidget.Repaint()
+        try:
+            print("firstloop")
+            if(logEntryList and tableWidget):
+                print("secondloop")
+                rowcount = tableWidget.rowCount()
+                for logEntry in logEntryList:
+                    print("thirdloop")
+                    tableWidget.insertRow(rowcount)
+                    tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
+                    tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(logEntry.get_name()))
+                    tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(logEntry.get_timestamp()))
+                    tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(logEntry.get_description()))
+                    tableWidget.setItem(rowcount, 4, QtWidgets.QTableWidgetItem(""))
+                    tableWidget.setItem(rowcount, 5, QtWidgets.QTableWidgetItem(logEntry.get_path()))
+                    tableWidget.setItem(rowcount, 6, QtWidgets.QTableWidgetItem(""))
+                    rowcount = rowcount+1
+                #tableWidget.Repaint()
+
+        except Exception as e:
+            print('error table:')
+            print(str(e))
 
 
 class FilterPopup(object):
@@ -151,23 +155,35 @@ class FilterPopup(object):
 
         def name_sort(logEntryList):
             li = sorted(logEntryList, key=lambda x: x.get_name().lower())
-            LogEntryScreen.refreshTable(self.tablewidget, li)
+            LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
             QWidget.close()
 
         def des_sort(logEntryList):
-            li = sorted(logEntryList, key= lambda x: x.get_description().lower())
-            LogEntryScreen.refreshTable(self.tablewidget, li)
+            print("Here")
+            li = sorted(logEntryList, key=lambda x: x.get_description().lower())
+            print("Here2")
+            try:
+                LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
+            except Exception as e:
+                print("fuck")
+                print(str(e))
+
+            print("Here3")
             QWidget.close()
+
+            # except Exception as e:
+            #     print('error desc:')
+            #     print(str(e))
 
 
         def time_sort(logEntryList):
             logEntryList.sort(key=lambda date: time.strptime(date.get_timestamp(), "%H:%M %m/%d/%y %p"))
-            LogEntryScreen.refreshTable(self.tablewidget, logEntryList)
+            LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, logEntryList)
             QWidget.close()
 
         def source_sort(logEntryList):
             li = sorted(logEntryList, key= lambda x: x.get_path().lower())
-            LogEntryScreen.refreshTable(self.tablewidget, li)
+            LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
             QWidget.close()
 
         def only_white(logEntryList):
@@ -178,7 +194,7 @@ class FilterPopup(object):
                 d = get_dir(x)
                 if (d.endswith(team)):
                     li.append(x)
-            LogEntryScreen.refreshTable(self.tablewidget, li)
+            LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
             QWidget.close()
 
         def only_red(logEntryList):
@@ -189,7 +205,7 @@ class FilterPopup(object):
                 d = get_dir(x)
                 if (d.endswith(team)):
                     li.append(x)
-            LogEntryScreen.refreshTable(self.tablewidget, li)
+            LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
             QWidget.close()
 
         def only_blue(logEntryList):
@@ -200,7 +216,7 @@ class FilterPopup(object):
                 d = get_dir(x)
                 if (d.endswith(team)):
                     li.append(x)
-            LogEntryScreen.refreshTable(self.tablewidget, li)
+            LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
             QWidget.close()
 
         def date_range(logEntryList, sd, ed):
@@ -235,27 +251,30 @@ class FilterPopup(object):
                 for i in newList:
                     if(i == item):
                         li.append(x)
-            LogEntryScreen.refreshTable(self.tablewidget, li)
+            LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
             QWidget.close()
 
         primaryLayout = QVBoxLayout()
         mainLabel = QLabel("Filter:")
         nameFilterBtn = QPushButton("Filter by Name")
-        nameFilterBtn.clicked.connect(lambda: name_sort(self, self.logEntryList))
+        nameFilterBtn.clicked.connect(lambda: name_sort(self.logEntryList))
         timeFilterBtn = QPushButton("Filter by Time")
-        timeFilterBtn.clicked.connect(lambda: time_sort(self, self.logEntryList))
+        timeFilterBtn.clicked.connect(lambda: time_sort(self.logEntryList))
         descriptionFilterBtn = QPushButton("Filter by Description")
-        descriptionFilterBtn.clicked.connect(lambda: des_sort(self, self.logEntryList))
+
+        # descriptionFilterBtn.clicked.connect(lambda: des_sort(self, splunkExport()))
+        descriptionFilterBtn.clicked.connect(lambda: des_sort(self.logEntryList))
+
         blueFilterButton = QPushButton("Filter by Blue Team")
-        blueFilterButton.clicked.connect(lambda: only_blue(self, self.logEntryList))
+        blueFilterButton.clicked.connect(lambda: only_blue(self.logEntryList))
         redFilterButton = QPushButton("Filter by Red Team")
-        redFilterButton.clicked.connect(lambda: only_red(self, self.logEntryList))
+        redFilterButton.clicked.connect(lambda: only_red(self.logEntryList))
         whiteFilterButton = QPushButton("Filter by White Team")
-        whiteFilterButton.clicked.connect(lambda: only_white(self, self.logEntryList))
+        whiteFilterButton.clicked.connect(lambda: only_white(self.logEntryList))
         searchLabel = QLabel("Search:")
         searchText = QLineEdit()
         searchBtn = QPushButton("Search")
-        searchBtn.clicked.connect(lambda: search(self, self.logEntryList, searchText.text()))
+        searchBtn.clicked.connect(lambda: search(self.logEntryList, searchText.text()))
 
         primaryLayout.addWidget(mainLabel)
         primaryLayout.addWidget(nameFilterBtn)
