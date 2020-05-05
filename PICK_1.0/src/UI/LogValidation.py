@@ -2,7 +2,7 @@ import os
 import time
 import datetime
 import calendar
-from Models.EAR import EAR
+from UI.Models.EAR import EAR
 
 
 def check_time(Logdate, start, end):

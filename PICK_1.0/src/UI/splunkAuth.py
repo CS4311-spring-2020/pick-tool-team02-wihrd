@@ -10,16 +10,15 @@ from Models import LogEntry
 from Models.LogEntry import logEntry
 from Models.LogFile import LogFile
 from Models.EventConfiguration import EventConfiguration
-from Models.EAR import EAR
-#import numpy as np
+from UI.Models.EAR import EAR
 import time
 
 HOST = 'localhost'
 PORT = '8089'
-USERNAME = 'imhudson'
-PASSWORD = 'Test1234'
+USERNAME = 'wkoo05'
+PASSWORD = 'splunkpw1'
 
-def valTable():
+def valFoldCheck():
     path = "C:\\Users\\wkoo0\\Videos\\test\\"
     directory = os.fsencode(path)
     validationList = []
@@ -27,6 +26,7 @@ def valTable():
     e = "04/26/2020"
 
     try:
+        print("I got here")
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             concatString = path + filename
@@ -42,7 +42,7 @@ def valTable():
                 continue
 
     except Exception as e:
-        print('error:')
+        print('error2:')
         print(str(e))
 
     return validationList
@@ -80,19 +80,19 @@ def splunk_upload():
             if(val == 1):
                 #print("Log ingested to splunk")
                 myindex.upload(concatString)
-                obj = LogEntry(" ", log_date, filename, concatString)
+                obj = logEntry(" ", log_date, filename, concatString)
                 validationList.append(obj)
                 del concatString
             else:
                 print("Here")
-                obj = EAR(concatString, log_date, "", "", "Timestamp Out of Bounds")
+                obj = EAR(filename, log_date, "", "", "Timestamp Out of Bounds")
                 earList.append(obj)
                 del concatString
             continue
 
 
     except Exception as e:
-        print('error:')
+        print('error1:')
         print(str(e))
 
     return earList

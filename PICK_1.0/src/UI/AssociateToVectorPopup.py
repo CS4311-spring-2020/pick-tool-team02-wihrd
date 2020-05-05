@@ -2,12 +2,12 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QInputDialog, QLineEdit, QVBoxLayout, QHBoxLayout, QLabel, QGroupBox, QTextEdit, QPushButton, QComboBox
 from Models.EventConfiguration import EventConfiguration
-from Models.LogEntry import logEntry
+from UI.Models.LogEntry import logEntry
 
 class AssociateToVector(object):
 
-    def setUpDialogUI(self, QWidget):
 
+    def setUpDialogUI(self, QWidget):
         logentry: logEntry
 
         def closeDialogHelper(self, vectorcombobox):
@@ -22,7 +22,7 @@ class AssociateToVector(object):
         mainLabel = QLabel("Associate to Vector")
         logentryLabel = QLabel("Log Entry" + logentry.get_name())
         vectorComboBox = QComboBox()
-        updateVectorComboBox(vectorComboBox)
+        self.updateVectorComboBox(vectorComboBox)
         savebutton = QPushButton("Save")
         savebutton.clicked.connect(lambda: closeDialogHelper(vectorComboBox))
 
