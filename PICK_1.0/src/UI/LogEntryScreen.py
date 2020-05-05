@@ -165,7 +165,6 @@ class FilterPopup(object):
             try:
                 LogEntryScreen.refreshTable(LogEntryScreen, self.tablewidget, li)
             except Exception as e:
-                print("fuck")
                 print(str(e))
 
             print("Here3")
