@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplication, QWidget, QTableWidget, QListWidget, QListWidgetItem, QPushButton
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QRect
-from UI import splunkAuth
+from UI.splunkAuth import *
 
 class LogIngestionScreen(QWidget):
     def __init__(self, parent):
@@ -114,12 +114,12 @@ class LogIngestionScreen(QWidget):
             for ear in earList:
                 print("3 loop")
                 tableWidget.insertRow(rowcount)
-                tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
-                tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(ear.getName()))
-                tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(ear.getTime()))
-                tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(ear.getDesc()))
-                tableWidget.setItem(rowcount, 4, QtWidgets.QTableWidgetItem(ear.getTeam()))
-                tableWidget.setItem(rowcount, 5, QtWidgets.QTableWidgetItem(ear.getError()))
+                #tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
+                tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(ear.getName()))
+                tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(ear.getTime()))
+                tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(ear.getDesc()))
+                tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(ear.getTeam()))
+                tableWidget.setItem(rowcount, 4, QtWidgets.QTableWidgetItem("Timestamp error"))
                 rowcount = rowcount+1
 
     def refreshValidationTable(self, tableWidget, valList):
@@ -130,23 +130,24 @@ class LogIngestionScreen(QWidget):
             for val in valList:
                 print("4 loop")
                 tableWidget.insertRow(rowcount)
-                tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
-                tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(val.get_name()))
-                tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(val.get_timestamp()))
-                tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(val.get_description()))
+                # tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(rowcount))
+                tableWidget.setItem(rowcount, 0, QtWidgets.QTableWidgetItem(val.get_name()))
+                tableWidget.setItem(rowcount, 1, QtWidgets.QTableWidgetItem(val.get_timestamp()))
+                tableWidget.setItem(rowcount, 2, QtWidgets.QTableWidgetItem(val.get_description()))
+                tableWidget.setItem(rowcount, 3, QtWidgets.QTableWidgetItem(val.get_path()))
                 tableWidget.setItem(rowcount, 4, QtWidgets.QTableWidgetItem(val.get_path()))
                 tableWidget.setItem(rowcount, 5, QtWidgets.QTableWidgetItem(val.get_path()))
-                tableWidget.setItem(rowcount, 6, QtWidgets.QTableWidgetItem(val.get_path()))
                 rowcount = rowcount+1
 
 
     def onClickLogIngestBtn(self, earTable, valTable):
-        earList = splunkAuth.splunk_upload()
-        valList = splunkAuth.valTable()
+        earList = splunk_upload()
+        print("WHOOOHOH")
+        valList = valFoldCheck()
         print("HERE")
         self.refreshValidationTable(valTable, valList)
         self.refreshEARTable(earTable, earList)
-        splunkAuth.splunkExport()
+        splunkExport()
         print("test successful")
 
     # def earTable(self):

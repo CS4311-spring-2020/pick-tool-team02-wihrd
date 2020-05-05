@@ -4,13 +4,26 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplication, QWidget, QTableWidget, QListWidget, QListWidgetItem, QPushButton
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QRect
-from Models.LogEntry import logEntry
-from UI import splunkAuth
+from UI.Models.LogEntry import logEntry
+from UI.AssociateToVectorPopup import AssociateToVector
+from UI.splunkAuth import *
 
 class LogEntryScreen(QWidget):
 
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
+
+        def showAddVectorPopup(self, logEntryTable, logentryList):
+            # indexes = logEntryTable.selectionModel().selectedRows()
+            # index = indexes[0]
+            # logEntry = logentryList[index]
+            # AssociateToVector.logentry = logEntry
+            self.popup = QWidget()
+            self.avDialog = AssociateToVector()
+            self.avDialog.setUpDialogUI(self.popup)
+            self.popup.show()
+
+        
         self.top = parent.top
         self.left = parent.left
         self.height = parent.height
@@ -44,12 +57,13 @@ class LogEntryScreen(QWidget):
         primaryLayout.addWidget(logEntryTableLable)
         primaryLayout.addWidget(logEntryTable)
 
-        self.refreshTable(logEntryTable, splunkAuth.splunkExport())
+        self.refreshTable(logEntryTable, splunkExport())
 
 
         filterbtn = QPushButton("Filter")
         markSigbtn = QPushButton("Mark As Significant")
         associatebtn = QPushButton("Associate")
+        associatebtn.clicked.connect(lambda: showAddVectorPopup(logEntryTable, splunkAuth.splunkExport()))
         spacerlabel1 = QLabel()
         spacerlabel2 = QLabel()
         spacerlabel3 = QLabel()
@@ -65,6 +79,8 @@ class LogEntryScreen(QWidget):
         primaryLayout.addWidget(buttonGroupBox)
 
         self.show()
+
+
 
 
 

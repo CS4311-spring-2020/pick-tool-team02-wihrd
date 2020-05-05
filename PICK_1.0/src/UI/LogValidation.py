@@ -4,6 +4,8 @@ import datetime
 import calendar
 import pandas as pd
 import re
+from UI.Models.EAR import EAR
+
 
 
 def check_time(Logdate, start, end):

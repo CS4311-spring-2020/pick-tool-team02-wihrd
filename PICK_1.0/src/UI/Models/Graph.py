@@ -1,4 +1,4 @@
-from Models.Vector import vector
+
 class graph():
     def __init__(self, vector):
         self.__vector = vector
