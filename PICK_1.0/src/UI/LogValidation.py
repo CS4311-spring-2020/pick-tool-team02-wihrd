@@ -1,10 +1,8 @@
 import os
-import time
 import datetime
-import calendar
 import pandas as pd
 import re
-from UI.Models.EAR import EAR
+
 
 
 def check_time(Logdate, start, end):
@@ -65,7 +63,6 @@ def validate_log(file, startDate, endDate):
 
 
 def txt_logs(file, startDate, endDate):
-    v = -1
     f = open(file, "r")
     content = f.read()
     pattern = "\d{2}[:]\d{2}\s\d{2}[/]\d{2}[/]\d{2}\s\w\w"
@@ -76,6 +73,8 @@ def txt_logs(file, startDate, endDate):
         logDate = d[0] + " " + d[1] + " " + d[2]
         print("Timestamp: " + x)
         v = check_time(logDate, startDate, endDate)
+        if (v == -1):
+            return -1
     return v
 
 
@@ -90,6 +89,8 @@ def excel_logs(file, startDate, endDate):
         logDate = d[0] + " " + d[1] + " " + d[2]
         print("Timestamp: " + x)
         v = check_time(logDate, startDate, endDate)
+        if (v == -1):
+            return -1
     return v
 
 
@@ -104,4 +105,6 @@ def csv_logs(file, startDate, endDate):
         logDate = d[0] + " " + d[1] + " " + d[2]
         print("Timestamp: " + x)
         v = check_time(logDate, startDate, endDate)
+        if (v == -1):
+            return -1
     return v
