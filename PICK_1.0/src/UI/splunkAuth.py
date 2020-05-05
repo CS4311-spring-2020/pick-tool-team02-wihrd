@@ -23,7 +23,7 @@ def valFoldCheck():
     directory = os.fsencode(path)
     validationList = []
     s = "03/20/2020"
-    e = "04/26/2020"
+    e = "05/26/2020"
 
     try:
         print("I got here")
@@ -66,8 +66,8 @@ def splunk_upload():
         directory = os.fsencode(path)
 
         #dates
-        s = str("03/20/2020")
-        e = str("04/26/2020")
+        s = str("01/01/20")
+        e = str("01/01/21")
         earList = []
         validationList = []
 
