@@ -54,3 +54,6 @@ class vector():
     
     def set_graph(self, graph):
       self.__graph = graph
+
+    def addLogEntry(self, logentry):
+      self.__logentrys.append(logentry)
