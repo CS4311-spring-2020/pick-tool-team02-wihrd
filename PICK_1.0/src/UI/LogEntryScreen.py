@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QRect
 from Models.LogEntry import logEntry
-from UI import splunkAuth
+import splunkAuth
 
 class LogEntryScreen(QWidget):
 

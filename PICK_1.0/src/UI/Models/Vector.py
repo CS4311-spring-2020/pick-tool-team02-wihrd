@@ -1,22 +1,29 @@
 
-from Models.LogEntry import logEntry;
-from Models.Graph import graph;
+from Models.LogEntry import logEntry
+from Models.Graph import graph
 
 class vector():
     
-    def __init__(self, daterange, creator, description, name):
-        self.__daterange = daterange;
-        self.__creator = creator;
-        self.__description = description;
-        self.__name = name;
-        self.__logentrys = [];
+    def __init__(self, startDate, endDate, creator, description, name):
+        self.__startDate = startDate
+        self.__endDate = endDate
+        self.__creator = creator
+        self.__description = description
+        self.__name = name
+        self.__logentrys = []
         self.__graph = graph(self)
     
-    def get_daterange(self):
-      return self.__daterange
+    def get_startDate(self):
+      return self.__startDate
 
-    def set_daterange(self, daterange):
-      self.__daterange = daterange
+    def set_startDate(self, startDate):
+      self.__startDate = startDate
+
+    def get_endDate(self):
+      return self.__endDate
+
+    def set_endDate(self, endDate):
+      self.__endDate = endDate
 
     def get_creator(self):
       return self.__creator
