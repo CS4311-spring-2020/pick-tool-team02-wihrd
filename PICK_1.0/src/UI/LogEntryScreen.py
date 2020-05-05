@@ -14,15 +14,21 @@ class LogEntryScreen(QWidget):
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
 
-        def showAddVectorPopup(self, logEntryTable, logentryList):
-            #indexes = logEntryTable.selectionModel().selectedRows()
-            #index = indexes[0]
-            #logEntry = logentryList[index]
-            #AssociateToVector.logentry = logEntry
-            self.popup = QWidget()
-            self.avDialog = AssociateToVector()
-            self.avDialog.setUpDialogUI(self.popup)
-            self.popup.show()
+        def showAddVectorPopup(self, logEntryTable, logEntryList):
+
+            try:
+                indexes = logEntryTable.selectionModel().selectedRows()
+                index = indexes[0].row()
+                logEntry = logEntryList[index]
+                AssociateToVector.logentry = logEntry
+                self.popup = QWidget()
+                self.avDialog = AssociateToVector()
+                self.avDialog.setUpDialogUI(self.popup)
+                self.popup.show()
+
+            except Exception as e:
+                print('error associate:')
+                print(str(e))
 
         
         self.top = parent.top
@@ -64,7 +70,7 @@ class LogEntryScreen(QWidget):
         filterbtn = QPushButton("Filter")
         markSigbtn = QPushButton("Mark As Significant")
         associatebtn = QPushButton("Associate")
-        associatebtn.clicked.connect(lambda: showAddVectorPopup(self, logEntryTable, splunkAuth.splunkExport()))
+        associatebtn.clicked.connect(lambda: showAddVectorPopup(self, logEntryTable, splunkExport()))
         spacerlabel1 = QLabel()
         spacerlabel2 = QLabel()
         spacerlabel3 = QLabel()

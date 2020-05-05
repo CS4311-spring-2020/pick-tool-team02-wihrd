@@ -15,7 +15,7 @@ import time
 
 HOST = 'localhost'
 PORT = '8089'
-USERNAME = 'wkoo05'
+USERNAME = 'admin'
 PASSWORD = 'splunkpw1'
 
 def valFoldCheck():
@@ -48,7 +48,7 @@ def valFoldCheck():
     return validationList
 
 def splunk_upload():
-    service = client.connect(host=HOST, port=PORT, username=USERNAME, password=PASSWORD)
+    service = client.connect(host=HOST, port=PORT, username=USERNAME)
     print(service)
     try:
         service.indexes.create("test_index8")
@@ -99,7 +99,7 @@ def splunk_upload():
 
 
 def splunkExport():
-    service = client.connect(host=HOST, port=PORT, username=USERNAME, password=PASSWORD)
+    service = client.connect(host=HOST, port=PORT, username=USERNAME)
     rr = results.ResultsReader(service.jobs.export("search index=test_index8"))
     substringSource = "source"
     substringDescription = "_raw"
@@ -126,12 +126,12 @@ def splunkExport():
             obj = logEntry(descResult, timestamp, name, sourceResult)
 
             # print(res)
-            print(descResult)
-            print(sourceResult)
+            #print(descResult)
+            #print(sourceResult)
             logEntryList.append(obj)
 
     #assert rr.is_preview == False
-
+    print("TEEHEE")
     return logEntryList
 
 

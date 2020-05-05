@@ -6,27 +6,37 @@ from UI.Models.LogEntry import logEntry
 
 class AssociateToVector(object):
 
-    #logentry : logEntry
+    logentry : logEntry
 
     def setUpDialogUI(self, QWidget):
 
 
-        def closeDialogHelper(self):
-            #eventConfig = EventConfiguration.getinstance()
-            #vectorList = eventConfig.getVectorList()
-            #vector = vectorList[vectorComboBox.currentIndex()]
-            #vector.addLogEntry(logentry)
-            QWidget.close()
+        def closeDialogHelper(self, vectorComboBox):
+
+            try:
+                eventConfig = EventConfiguration.getinstance()
+                vectorList = eventConfig.getVectorList()
+                vector = vectorList[vectorComboBox.currentIndex()]
+                vector.addLogEntry(self.logentry)
+                QWidget.close()
+            except Exception as e:
+                print('error close dialog:')
+                print(str(e))
 
         
         primaryLayout = QVBoxLayout()
         mainLabel = QLabel("Associate to Vector")
-        #logentryLabel = QLabel("Log Entry" + logentry.get_name())
+        logentryLabel = QLabel("Log Entry" + self.logentry.get_path())
         vectorComboBox = QComboBox()
         self.updateVectorComboBox(vectorComboBox)
-        savebutton = QPushButton("Save")
-        savebutton.clicked.connect(lambda: closeDialogHelper(vectorComboBox))
+        savebutton = QPushButton("Associate")
+        try:
+            savebutton.clicked.connect(lambda: closeDialogHelper(self, vectorComboBox))
+        except Exception as e:
+            print('error close dialog:')
+            print(str(e))
         primaryLayout.addWidget(mainLabel)
+        primaryLayout.addWidget(logentryLabel)
         primaryLayout.addWidget(vectorComboBox)
         primaryLayout.addWidget(savebutton)
 
