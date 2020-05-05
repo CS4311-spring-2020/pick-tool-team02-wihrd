@@ -1,13 +1,18 @@
 #LogEntryScreen
+import time
+import os
+import re
+import datetime
 import sys
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplication, QWidget, QTableWidget, QListWidget, QListWidgetItem, QPushButton
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplication, QWidget, QTableWidget, QListWidget, QListWidgetItem, QPushButton, QLineEdit
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QRect
 
 from UI.Models.LogEntry import logEntry
 from UI.AssociateToVectorPopup import AssociateToVector
 from UI.splunkAuth import *
+
 
 class LogEntryScreen(QWidget):
 
@@ -28,6 +33,21 @@ class LogEntryScreen(QWidget):
 
             except Exception as e:
                 print('error associate:')
+                print(str(e))
+
+
+        def showFilterDialog(self, logEntryTable, logEntryList):
+
+            try:
+                FilterPopup.tablewidget = logEntryTable
+                FilterPopup.logEntryList = logEntryList
+                self.popup = QWidget()
+                self.avDialog = FilterPopup()
+                self.avDialog.setUpDialogUI(self.popup)
+                self.popup.show()
+
+            except Exception as e:
+                print('error filter')
                 print(str(e))
 
         
@@ -68,6 +88,7 @@ class LogEntryScreen(QWidget):
 
 
         filterbtn = QPushButton("Filter")
+        filterbtn.clicked.connect(lambda: showFilterDialog(self, logEntryTable, splunkExport()))
         markSigbtn = QPushButton("Mark As Significant")
         associatebtn = QPushButton("Associate")
         associatebtn.clicked.connect(lambda: showAddVectorPopup(self, logEntryTable, splunkExport()))
@@ -108,6 +129,149 @@ class LogEntryScreen(QWidget):
                 tableWidget.setItem(rowcount, 6, QtWidgets.QTableWidgetItem(""))
                 rowcount = rowcount+1
             #tableWidget.Repaint()
+
+
+class FilterPopup(object):
+
+    tablewidget : QTableWidget
+    logEntryList : []
+
+    def setUpDialogUI(self, QWidget):
+
+        def get_dir(logEntry):
+            dir = os.path.dirname(logEntry.get_path()).lower()
+            return dir
+
+        def time_split(logEntry):
+            pattern = "\d{2}[/]\d{2}[/]\d{2}"
+            d = re.findall(pattern, logEntry.get_timestamp())
+            date = d.pop()
+            date = date.split("/")
+            return date
+
+        def name_sort(logEntryList):
+            li = sorted(logEntryList, key=lambda x: x.get_name().lower())
+            LogEntryScreen.refreshTable(self.tablewidget, li)
+            QWidget.close()
+
+        def des_sort(logEntryList):
+            li = sorted(logEntryList, key= lambda x: x.get_description().lower())
+            LogEntryScreen.refreshTable(self.tablewidget, li)
+            QWidget.close()
+
+
+        def time_sort(logEntryList):
+            logEntryList.sort(key=lambda date: time.strptime(date.get_timestamp(), "%H:%M %m/%d/%y %p"))
+            LogEntryScreen.refreshTable(self.tablewidget, logEntryList)
+            QWidget.close()
+
+        def source_sort(logEntryList):
+            li = sorted(logEntryList, key= lambda x: x.get_path().lower())
+            LogEntryScreen.refreshTable(self.tablewidget, li)
+            QWidget.close()
+
+        def only_white(logEntryList):
+            nl = time_sort(logEntryList)
+            li= []
+            team = "white"
+            for x in nl:
+                d = get_dir(x)
+                if (d.endswith(team)):
+                    li.append(x)
+            LogEntryScreen.refreshTable(self.tablewidget, li)
+            QWidget.close()
+
+        def only_red(logEntryList):
+            nl = time_sort(logEntryList)
+            li = []
+            team = "red"
+            for x in nl:
+                d = get_dir(x)
+                if (d.endswith(team)):
+                    li.append(x)
+            LogEntryScreen.refreshTable(self.tablewidget, li)
+            QWidget.close()
+
+        def only_blue(logEntryList):
+            nl = time_sort(logEntryList)
+            li = []
+            team = "blue"
+            for x in nl:
+                d = get_dir(x)
+                if (d.endswith(team)):
+                    li.append(x)
+            LogEntryScreen.refreshTable(self.tablewidget, li)
+            QWidget.close()
+
+        def date_range(logEntryList, sd, ed):
+            li = time_sort(logEntryList)
+            nl = []
+            sd = sd.split("/")
+            ed = ed.split("/")
+            s = datetime.date(int(sd[2]), int(sd[0]), int(sd[1]))
+            e = datetime.date(int(ed[2]), int(ed[0]), int(ed[1]))
+
+            for x in li:
+                d = time_split(x)
+                ld = datetime.date(int(d[2]), int(d[0]), int(d[1]))
+                if((ld  >= s) and (ld <= e)):
+                    nl.append(x)
+            return nl
+
+        def search(logEntryList, item):
+            nl = time_sort(logEntryList)
+            li=[]
+            try:
+                item = item.lower()
+            except:
+                item = item
+
+            for x in nl:
+                l = x.get_timestamp().split("/")
+                l1 = x.get_name().lower().split()
+                l2 = x.get_description().lower().split()
+                l3 = x.get_path().lower().split("\\")
+                newList = l + l1+ l2 + l3
+                for i in newList:
+                    if(i == item):
+                        li.append(x)
+            LogEntryScreen.refreshTable(self.tablewidget, li)
+            QWidget.close()
+
+        primaryLayout = QVBoxLayout()
+        mainLabel = QLabel("Filter:")
+        nameFilterBtn = QPushButton("Filter by Name")
+        nameFilterBtn.clicked.connect(lambda: name_sort(self, self.logEntryList))
+        timeFilterBtn = QPushButton("Filter by Time")
+        timeFilterBtn.clicked.connect(lambda: time_sort(self, self.logEntryList))
+        descriptionFilterBtn = QPushButton("Filter by Description")
+        descriptionFilterBtn.clicked.connect(lambda: des_sort(self, self.logEntryList))
+        blueFilterButton = QPushButton("Filter by Blue Team")
+        blueFilterButton.clicked.connect(lambda: only_blue(self, self.logEntryList))
+        redFilterButton = QPushButton("Filter by Red Team")
+        redFilterButton.clicked.connect(lambda: only_red(self, self.logEntryList))
+        whiteFilterButton = QPushButton("Filter by White Team")
+        whiteFilterButton.clicked.connect(lambda: only_white(self, self.logEntryList))
+        searchLabel = QLabel("Search:")
+        searchText = QLineEdit()
+        searchBtn = QPushButton("Search")
+        searchBtn.clicked.connect(lambda: search(self, self.logEntryList, searchText.text()))
+
+        primaryLayout.addWidget(mainLabel)
+        primaryLayout.addWidget(nameFilterBtn)
+        primaryLayout.addWidget(timeFilterBtn)
+        primaryLayout.addWidget(descriptionFilterBtn)
+        primaryLayout.addWidget(blueFilterButton)
+        primaryLayout.addWidget(redFilterButton)
+        primaryLayout.addWidget(whiteFilterButton)
+        primaryLayout.addWidget(searchLabel)
+        primaryLayout.addWidget(searchText)
+        primaryLayout.addWidget(searchBtn)
+
+        QWidget.setLayout(primaryLayout)
+
+        QWidget.show()
+
 
 
 
