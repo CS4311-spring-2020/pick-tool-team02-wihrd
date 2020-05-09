@@ -1,8 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QGroupBox, QApplication, QWidget, QTableWidget, QListWidget, QListWidgetItem, QPushButton, QComboBox, QTabWidget
-from graph.graph_editor import GraphEditor
-from graph.graph_editor_view import GraphEditorView
 from AddNewVectorDialog import addVectorDialog
 from Models.EventConfiguration import EventConfiguration
 
@@ -57,10 +55,7 @@ class VectorScreen(QWidget):
         tabletab = vectorTable
         tabs.addTab(tabletab, "Table")
 
-        graphEditor = GraphEditor()
-        graphEditorScene = graphEditor.graph_editor_scene
-        graphEditorView = GraphEditorView(graphEditorScene, tabs)
-        graphTab = graphEditorView
+        graphTab = QWidget()
         tabs.addTab(graphTab, "Graph")
 
         primaryLayout.addWidget(mainlabel)
