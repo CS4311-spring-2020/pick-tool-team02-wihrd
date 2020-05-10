@@ -13,20 +13,25 @@ We require the following throughout all components within the system
 This system requires Python 3.7 or Newer
 
 ### Dependencies
-This Project uses pyqt5 and splunk for all GUI and Splunk related activities
+This Project uses pyqt5, splunk, pandas
 
-To install pyqt5 run the following
+To install pyqt5 run the following in your terminal
 ```
 pip install PyQt5
 ```
 To install splunk do the following
-1. Install the splunk sdk by running the following
+1. Install the splunk sdk by running the following in your terminal
   ```
   pip install splunk-sdk
   ```
 2. Download and make an account with splunk from https://www.splunk.com/
 3. Run the local splunk server and setup your username and password
 4. Change the username, password, and port numbers in the splunkAuth.py file to what you configured in your splunk installation
+
+To install pandas run the following in your terminal
+```
+  pip install pandas
+```
 
 ### Deployment
 The Following outlines the steps required to run the system
