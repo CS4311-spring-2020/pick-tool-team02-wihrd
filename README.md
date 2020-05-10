@@ -91,13 +91,35 @@ The Transcription component uses pydub, AudioSegment, ffmpeg. You can install th
     ```
     python Transcriber.py
     ```
-    
 
 
+## Graph Module
+This module is for managing the graph and all subsequent node/connector relations 
 
+### Prerequisites
+This module requires Python 3 and PyQt5
 
+### Dependencies
+This module uses QGraphViz 
 
+To install QGraphViz run the following in your terminal
+```
+  pip install QGraphViz
+```
 
+### Deployment 
+To Run this module move to the PICK_1.0/src/UI/QGraphView directory and run the following in your terminal 
+```
+  python QGraphViewer.py
+```
+
+## And Thats All You Need To Run PICK
+
+## Quick Notes
+* This system is designed to ingest files marked in three directories: White, Red, and Blue
+* All dates in this system are handled in ZULU time
+* This system is designed to handle .txt, .xlsx, and .csv files
+* The graph only exports to .json files
 
 
 
