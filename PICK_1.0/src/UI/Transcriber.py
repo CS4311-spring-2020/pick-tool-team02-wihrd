@@ -4,7 +4,6 @@ from pydub import AudioSegment
 import subprocess
 
 def transcription(path):
-    #file = os.getfilename(path)
     mp4_file = path.endswith('.mp4')
     mp3_file = path.endswith('.mp3')
     wav_file = path.endswith('.wav')
