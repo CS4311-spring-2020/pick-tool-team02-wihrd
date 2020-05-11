@@ -3,7 +3,7 @@ import speech_recognition as sr
 from pydub import AudioSegment
 import subprocess
 
-def transcription(path):
+def transcriber(path):
     mp4_file = path.endswith('.mp4')
     mp3_file = path.endswith('.mp3')
     wav_file = path.endswith('.wav')
